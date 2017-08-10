@@ -1,4 +1,4 @@
-var Brick = function(position){                               // 定义砖块
+var Brick = function(position){                               // 定义砖块,position格式为[x, y]
   var canvas = document.querySelector('#id-canvas')
   var image = imageFromPath('img/brick.png')
   var o = {

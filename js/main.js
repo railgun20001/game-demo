@@ -1,4 +1,8 @@
+
 var log = console.log.bind(console)
+// var log = function(text){
+//   document.querySelector('#id-textarea-log').value += '\n' + text
+// }
 
 var imageFromPath = function(path){
   var img = new Image()
@@ -18,8 +22,15 @@ var loadLevel = function(n){
   return bricks
 }
 
+
+
 var __main = function(){
-  var game= PaddleGame(60)
+  var images = {
+    ball: 'img/ball.png',
+    brick: 'img/brick.png',
+    paddle: 'img/paddle.png'
+  }
+  var game= PaddleGame(60, images)
   var paddle = Paddle()
   var ball = Ball()
   var bricks = loadLevel(1)
@@ -44,6 +55,25 @@ var __main = function(){
       game.runloop()
     }
   })
+  window.addEventListener('mousedown', function(event){
+    var x = event.offsetX
+    var y = event.offsetY
+    if (containMouse(x, y)) {
+      log(1)
+      ball.isDrag = true
+    }
+  })
+  window.addEventListener('mousemove', function(event){
+    var x = event.offsetX
+    var y = event.offsetY
+    if (ball.isDrag && game.status.paused) {
+      ball.x = x
+      ball.y = y
+    }
+  })
+  window.addEventListener('mouseup', function(event){
+    ball.isDrag = false
+  })
   game.update = function(){
     if (game.status.paused) {           // 暂停功能
       return
@@ -61,6 +91,9 @@ var __main = function(){
     }
   }
   game.draw = function(){
+    // 设置背景
+    // game.context.fillStyle = '#564'
+    // game.context.fillRect(0, 0, game.canvas.width, game.canvas.height)
     game.drawImage(paddle)
     game.drawImage(ball)
     for (var i = 0; i < bricks.length; i++) {
@@ -69,6 +102,15 @@ var __main = function(){
         game.drawImage(brick)
       }
     }
+      game.context.fillText('分数：' + game.score, 10, game.canvas.height - 10)
+  }
+  var containMouse = function(x, y){
+    if (x  >ball.x && x < ball.x + ball.image.width) {
+      if(y > ball.y && y < ball.y + ball.image.height) {
+        return true
+      }
+    }
+    return false
   }
 }
 __main()

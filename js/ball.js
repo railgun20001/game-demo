@@ -6,7 +6,8 @@ var Ball = function(){                               // 定义球
     image: BallImage,
     speedX: 6,
     speedY: -6,
-    fired: false
+    fired: false,
+    isDrag: false
   }
   BallImage.onload = function(){
     o.x = (canvas.width - o.image.width) / 2

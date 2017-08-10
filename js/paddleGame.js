@@ -1,11 +1,14 @@
-var PaddleGame = function(fps){
+var PaddleGame = function(fps, images){
+  // images是一个对象，里边是图片的引用名字和路径
   var timer = null
   var g = {
     actions: {},
     keydowns: {},
+    images: {},
     status: {
       paused: false
-    }
+    },
+    score: 0
   }
   var canvas = document.querySelector('#id-canvas')
   var context = canvas.getContext('2d')
@@ -45,9 +48,29 @@ var PaddleGame = function(fps){
       g.runloop()
     },1000/fps)
   }
-  timer = setTimeout(function(){
-    g.runloop()
-  },1000/fps)
+  // 预先加载所以图片
+  var loads = []
+  var names = Object.keys(images)
+  for (var i = 0; i < names.length; i++) {
+    let name = names[i]
+    var path = images[name]
+    let img = new Image()
+    img.src = path
+    img.onload = function(){
+      g.images[name] = img
+      // 所以图片加载完后，调用run()
+      loads.push(1)
+      if (loads.length === names.length) {
+        g.run()
+      }
+    }
+  }
+  // 程序开始运行
+  g.run = function(){
+    timer = setTimeout(function(){
+      g.runloop()
+    },1000/fps)
+  }
   g.gameOver = function(){
     clearTimeout(timer)
   }
