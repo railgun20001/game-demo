@@ -1,4 +1,4 @@
-var PaddleGame = function(fps, images){
+var PaddleGame = function(fps, images, runCallback){
   // images是一个对象，里边是图片的引用名字和路径
   var timer = null
   var g = {
@@ -6,7 +6,10 @@ var PaddleGame = function(fps, images){
     keydowns: {},
     images: {},
     status: {
-      paused: false
+      paused: false,
+      title: true,
+      main: false,
+      end: false
     },
     score: 0
   }
@@ -24,7 +27,7 @@ var PaddleGame = function(fps, images){
   window.addEventListener('keyup', function(event){
     g.keydowns[event.key] = false
   })
-  g.registerAction = function(key,callback){           // 用次函数注册的按键，按下后会一直执行callback，可以传多个key
+  g.registerAction = function(key,callback){           // 可以传多个key
     if (arguments.length === 2) {
       g.actions[key] = callback
     } else if (arguments.length > 2) {
@@ -33,6 +36,13 @@ var PaddleGame = function(fps, images){
       }
     }
   }
+  g.update = function(){
+    g.scene.update()
+  }
+  g.draw = function(){
+    g.scene.draw()
+  }
+
   g.runloop = function(){
     var actions = Object.keys(g.actions)
     for (let i = 0; i < actions.length; i++) {
@@ -65,11 +75,20 @@ var PaddleGame = function(fps, images){
       }
     }
   }
-  // 程序开始运行
-  g.run = function(){
+  g.runWithScene = function(scene){
+    g.scene = scene
+    // 程序开始运行
     timer = setTimeout(function(){
       g.runloop()
     },1000/fps)
+  }
+  g.run = function(){
+    runCallback(g)
+  }
+  var i = 1
+  g.replaceScene = function(scene){
+    log(i++)
+    g.scene = scene
   }
   g.gameOver = function(){
     clearTimeout(timer)

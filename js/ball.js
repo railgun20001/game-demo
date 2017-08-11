@@ -5,7 +5,7 @@ var Ball = function(){                               // 定义球
   var o = {
     image: BallImage,
     speedX: 6,
-    speedY: -6,
+    speedY: 6,
     fired: false,
     isDrag: false
   }
