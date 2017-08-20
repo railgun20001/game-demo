@@ -8,7 +8,7 @@ var SceneTitle = function(game){
     game.context.font = "30px Georgia"
     game.context.fillText('打砖块', (game.canvas.width - 90)/2, game.canvas.height/2)
     game.context.font = "10px Georgia"
-    game.context.fillText('点击鼠标或按k开始游戏', (game.canvas.width - 130)/2, (game.canvas.height + 50)/2)
+    game.context.fillText('点击鼠标或按k开始游戏,按f发射', (game.canvas.width - 170)/2, (game.canvas.height + 50)/2)
   }
   var titleToMain = function(){
     for (var i in game.status) {
